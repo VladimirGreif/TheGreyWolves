@@ -1,11 +1,23 @@
 package com.jsoft.game.thegreywolves.general;
 
+import java.util.ArrayList;
+
+import com.jsoft.game.thegreywolves.movement.Position;
+
 public abstract class Unit {
 	
 	public enum TYPE{
-		DESTROER,
-		SUBMARINE,
-		NON
+		DESTROER("Destoyer"),
+		SUBMARINE("Submarine"),
+		CARGO("Cargo"),
+		NON("No Type");
+		String description = "";
+		public String getDescription(){
+			return description;
+		}
+		TYPE(String desc){
+			description = desc;
+		}
 	}
 	
 	private TYPE type = TYPE.NON;
@@ -18,7 +30,91 @@ public abstract class Unit {
 	private double vX = 0;
 	private double vY = 0;
 	private double kurs = 0;
+	private ArrayList<Position> positionList = new ArrayList<Position>();
+	private double sonarZone = 180;
+	private double minSonarZone = 180;
+	private ArrayList<Report> reports = new ArrayList<Report>();
+	private boolean destroyed = false;
+	private long unitId;
+	private ArrayList<Unit> victimList = new ArrayList<Unit>();
+	private double maxSonarRange = 100;
+	private Weapons activeWeapon;
 	
+	public Weapons getActiveWeapon() {
+		return activeWeapon;
+	}
+
+	public void setActiveWeapon(Weapons activeWeapon) {
+		this.activeWeapon = activeWeapon;
+	}
+
+	public double getMaxSonarRange() {
+		return maxSonarRange;
+	}
+
+	public void setMaxSonarRange(double maxSonarRange) {
+		this.maxSonarRange = maxSonarRange;
+	}
+
+	public abstract void createReports();
+	
+
+	public ArrayList<Report> getReports() {
+		return reports;
+	}
+
+	public ArrayList<Position> getPositionList() {
+		return positionList;
+	}
+
+	public void setPositionList(ArrayList<Position> positionList) {
+		this.positionList = positionList;
+	}
+
+	public ArrayList<Unit> getVictimList() {
+		return victimList;
+	}
+
+	public void setVictimList(ArrayList<Unit> victimList) {
+		this.victimList = victimList;
+	}
+
+	public long getUnitId() {
+		return unitId;
+	}
+
+	public void setUnitId(long unitId) {
+		this.unitId = unitId;
+	}
+
+	public boolean isDestroyed() {
+		return destroyed;
+	}
+
+	public void setDestroyed(boolean destroyed) {
+		this.destroyed = destroyed;
+	}
+
+	public void setReports(ArrayList<Report> reports) {
+		this.reports = reports;
+	}
+
+	public double getMinSonarZone() {
+		return minSonarZone;
+	}
+
+	public void setMinSonarZone(double minSonarZone) {
+		this.minSonarZone = minSonarZone;
+	}
+
+	public double getSonarZone() {
+		return sonarZone;
+	}
+
+	public void setSonarZone(double sonarZone) {
+		this.sonarZone = sonarZone;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -79,5 +175,4 @@ public abstract class Unit {
 	public void setKurs(double kurs) {
 		this.kurs = kurs;
 	}
-	
 }

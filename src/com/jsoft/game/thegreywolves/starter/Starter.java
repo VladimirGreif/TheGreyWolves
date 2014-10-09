@@ -3,7 +3,6 @@ package com.jsoft.game.thegreywolves.starter;
 import javax.swing.SwingUtilities;
 
 import com.jsoft.game.thegreywolves.ui.MainFrame;
-import com.jsoft.game.thegreywolves.ui.WorkPanelDemo1;
 
 public class Starter {
 

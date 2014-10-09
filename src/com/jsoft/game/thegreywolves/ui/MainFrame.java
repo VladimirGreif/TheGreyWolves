@@ -22,12 +22,14 @@ public class MainFrame extends JFrame{
 	}
 	
 	public void goToWorkPanel(){
+		wp.repaint();
 		ts.setVisible(false);
 		wp.setVisible(true);
 		setContentPane(wp);
 	}
 	
 	public void goToSelectionPanel(){
+		ts.repaint();
 		wp.setVisible(false);
 		ts.setVisible(true);
 		setContentPane(ts);

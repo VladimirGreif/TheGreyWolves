@@ -1,7 +1,9 @@
 package com.jsoft.game.thegreywolves.game;
 
 import com.jsoft.game.thegreywolves.general.Unit;
+import com.jsoft.game.thegreywolves.general.Unit.TYPE;
 import com.jsoft.game.thegreywolves.movement.Engine;
+import com.jsoft.game.thegreywolves.movement.Position;
 import com.jsoft.game.thegreywolves.world.Arena;
 
 public class Game {
@@ -20,7 +22,18 @@ public class Game {
 	}
 	
 	public void addPlayer(Unit unit){
-		engine.generateStartPoint(unit, arena.getSize().getWidth(), arena.getSize().getHeight());
+		
+		engine.generateUnitsID(arena,unit);
+		
+//		engine.generateStartPoint(unit, arena.getSize().getWidth(), arena.getSize().getHeight());
+		
+//		if(unit.getType()==TYPE.DESTROER){
+//			unit.setCordinateX(5000);
+//			unit.setCordinateY(5000);
+//		}else{
+//			unit.setCordinateX(5000);
+//			unit.setCordinateY(10000);
+//		}
 		arena.getListOfPlayers().add(unit);
 	}
 	
@@ -32,7 +45,9 @@ public class Game {
 	}
 	
 	public void turn(){
+		System.out.println("Turn");
 		engine.checkPositions(arena, player);
+		player.createReports();
 	}
 
 	public Unit getPlayer() {
@@ -41,6 +56,26 @@ public class Game {
 
 	public void setPlayer(Unit player) {
 		this.player = player;
+	}
+
+	public Arena getArena() {
+		return arena;
+	}
+
+	public void setArena(Arena arena) {
+		this.arena = arena;
+	}
+	
+	public Unit getUnitByID(long id){
+		Unit result = null;
+		for(Unit u:arena.getListOfPlayers()){
+			if(u.getUnitId()==id){
+				result = u;
+				break;
+			}
+		}
+		
+		return result;
 	}
 
 }
