@@ -1,0 +1,93 @@
+# File produced by Open Asset Import Library (http://www.assimp.sf.net)
+# (assimp v3.1.187496374)
+
+newmtl JoinedMaterial_#4
+Kd 0.0509804 0.0509804 0.0509804
+Ka 0.0392157 0.0392157 0.0392157
+Ks 1 1 1
+Ke 0 0 0
+d 1
+Ns 59
+illum 2
+
+newmtl JoinedMaterial_#13
+Kd 0.266667 0.501961 0.501961
+Ka 0.0627451 0.117647 0.0784314
+Ks 1 1 1
+Ke 0 0 0
+d 0.23
+Ns 43
+illum 2
+
+newmtl JoinedMaterial_#14
+Kd 0.513726 0.513726 0.564706
+Ka 0.0588235 0.0588235 0.0588235
+Ks 0.898039 0.898039 0.898039
+Ke 0 0 0
+d 1
+Ns 22
+illum 2
+
+newmtl JoinedMaterial_#21
+Kd 0.180392 0.180392 0.180392
+Ka 0.133333 0.133333 0.133333
+Ks 1 1 1
+Ke 0 0 0
+d 1
+Ns 59
+illum 2
+
+newmtl deck (sub)
+Kd 0.341176 0.341176 0.341176
+Ka 0.0980392 0.0980392 0.0980392
+Ks 0.898039 0.898039 0.898039
+Ke 0 0 0
+d 1
+Ns 22
+illum 2
+
+newmtl gun (sub)
+Kd 0.333333 0.333333 0.364706
+Ka 0.0588235 0.0588235 0.0588235
+Ks 0.898039 0.898039 0.898039
+Ke 0 0 0
+d 1
+Ns 31
+illum 2
+
+newmtl holder (sub)
+Kd 0.513726 0.513726 0.564706
+Ka 0.0588235 0.0588235 0.0588235
+Ks 0.898039 0.898039 0.898039
+Ke 0 0 0
+d 1
+Ns 22
+illum 2
+
+newmtl JoinedMaterial_#24
+Kd 0.513726 0.513726 0.564706
+Ka 0.0588235 0.0588235 0.0588235
+Ks 0.898039 0.898039 0.898039
+Ke 0 0 0
+d 1
+illum 1
+
+newmtl misk (sub)
+Kd 0.117647 0.117647 0.117647
+Ka 0.0980392 0.0980392 0.0980392
+Ks 0.898039 0.898039 0.898039
+Ke 0 0 0
+d 1
+Ns 22
+illum 2
+
+newmtl ring-buoy
+Kd 0.545098 0.192157 0.517647
+Ka 0.180392 0.0627451 0.168627
+Ks 0.898039 0.898039 0.898039
+Ke 0 0 0
+d 1
+Ns 22
+illum 2
+map_Kd W-RED.TIF
+

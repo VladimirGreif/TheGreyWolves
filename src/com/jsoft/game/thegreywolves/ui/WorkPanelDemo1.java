@@ -41,11 +41,15 @@ public class WorkPanelDemo1 extends JPanel implements ChangeListener, ActionList
 	private JButton endTurnButton = new JButton("End Turn");
 	private JSlider speedSlider = new JSlider(JSlider.VERTICAL,0, 35, 0);
 	private JSlider bombDepthSlider = new JSlider(JSlider.VERTICAL,0, 500, 0);
+	private JSlider depthSlider = new JSlider(JSlider.VERTICAL,0, 400, 0);
 	private JSlider directionSlider = new JSlider(JSlider.HORIZONTAL,0, 360, 0);
 	private JLabel reportLabel = new JLabel("!!! Contact !!!");
 	private JLabel bombDepthLabel = new JLabel("BombDepth");
+	private JLabel depthLabel = new JLabel("Depth");
 	private ArrayList<JRadioButton> selectVisibleTarget = new ArrayList<JRadioButton>();
 	private ButtonGroup targetGroup = new ButtonGroup();
+	
+	private Panel3D world = new Panel3D();
 	
 	public WorkPanelDemo1(MainFrame parent){
 		super();
@@ -113,6 +117,20 @@ public class WorkPanelDemo1 extends JPanel implements ChangeListener, ActionList
 		bombDepthSlider.setValue(0);
 		bombDepthSlider.setVisible(false);
 
+		depthLabel.setVisible(false);
+		depthLabel.setVerticalTextPosition(JLabel.BOTTOM);
+		depthLabel.setHorizontalTextPosition(JLabel.CENTER);
+		add(depthLabel);
+		add(depthSlider);
+		depthSlider.addChangeListener(this);
+		depthSlider.setMajorTickSpacing(100);
+		depthSlider.setMinorTickSpacing(50);
+		depthSlider.setPaintTicks(true);
+		depthSlider.setPaintLabels(true);
+		depthSlider.setToolTipText("Depth");
+		depthSlider.setInverted(true);
+		depthSlider.setValue(0);
+		depthSlider.setVisible(false);
 
 
 		
@@ -143,6 +161,14 @@ public class WorkPanelDemo1 extends JPanel implements ChangeListener, ActionList
 		bombDepthSlider.setBounds(330 + insets.left, 100 + insets.top,
 		             size.width, size.height);
 		
+		size = depthLabel.getPreferredSize();
+		depthLabel.setBounds(330 + insets.left, 80 + insets.top,
+		             size.width, size.height);
+			
+		size = depthSlider.getPreferredSize();
+		depthSlider.setBounds(330 + insets.left, 100 + insets.top,
+		             size.width, size.height);
+		
 
 		size = reportLabel.getPreferredSize();
 		reportLabel.setBounds(10, 350,
@@ -156,6 +182,13 @@ public class WorkPanelDemo1 extends JPanel implements ChangeListener, ActionList
 		size = endTurnButton.getPreferredSize();
 		endTurnButton.setBounds(350, 400,
 	             size.width, size.height);
+		
+		add(world);
+		
+		size = world.getPreferredSize();
+		world.setBounds(650, 100,
+	             size.width, size.height);
+		
 
 	}
 	
@@ -163,6 +196,7 @@ public class WorkPanelDemo1 extends JPanel implements ChangeListener, ActionList
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);  // paint background
 //		setBackground(Color.BLACK);
+		world.setUnit(player);
 		String report = "";
 		String victims = "";
 		for(Unit u:player.getVictimList()){
@@ -186,6 +220,11 @@ public class WorkPanelDemo1 extends JPanel implements ChangeListener, ActionList
 			bombDepthLabel.setVisible(true);
 			bombDepthSlider.setVisible(true);
 
+		}else if(player.getType()==TYPE.SUBMARINE){
+			
+			depthLabel.setVisible(true);
+			depthSlider.setVisible(true);
+			
 		}
 		
 		if(player.getType()==TYPE.SUBMARINE){
@@ -210,7 +249,7 @@ public class WorkPanelDemo1 extends JPanel implements ChangeListener, ActionList
 						button.setSelected(true);
 						((Submarine)player).setUnderAttack(Game.getInstance().getUnitByID(u.getUnitId()));
 					}
-					button.setBounds(350, 100+num * 50,
+					button.setBounds(380, 100+num * 50,
 							sizeButton.width, sizeButton.height);
 					button.addActionListener(new ActionListener() {
 		                @Override
@@ -261,6 +300,8 @@ public class WorkPanelDemo1 extends JPanel implements ChangeListener, ActionList
 			player.setKurs(sl.getValue());
 		}else if(sl == bombDepthSlider){
 			((Destroyer)player).getBomb().setActiveDepth(bombDepthSlider.getValue());
+		}else if(sl == depthSlider){
+			player.setCordinateH(sl.getValue());
 		}
 //		System.out.println("Changed " + sl.getToolTipText());
 	}
@@ -271,6 +312,14 @@ public class WorkPanelDemo1 extends JPanel implements ChangeListener, ActionList
 
 	public void setPlayer(Unit player) {
 		this.player = player;
+	}
+
+	public Panel3D getWorld() {
+		return world;
+	}
+
+	public void setWorld(Panel3D world) {
+		this.world = world;
 	}
 
 }

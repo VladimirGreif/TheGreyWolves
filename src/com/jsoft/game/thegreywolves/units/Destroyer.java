@@ -1,5 +1,6 @@
 package com.jsoft.game.thegreywolves.units;
 
+import com.jsoft.game.thegreywolves.game.Game;
 import com.jsoft.game.thegreywolves.general.Range;
 import com.jsoft.game.thegreywolves.general.Report;
 import com.jsoft.game.thegreywolves.general.Unit;
@@ -20,6 +21,8 @@ public class Destroyer extends Unit {
 		setMinSonarZone(45);
 		setMaxSpeedMs(35 * conversionFromKnotsToMs);
 		setMaxSonarRange(40000);
+		setVisibleRange(5000);
+		setVisualRange(5000);
 		bomb = new Bomb(this);
 		setActiveWeapon(bomb);
 	}
@@ -29,6 +32,7 @@ public class Destroyer extends Unit {
 		System.out.println("Create Report");
 		
 		getReports().clear();
+		getVisibleTargets().clear();
 
 		double currentAngle = getSonarZone() -  getSpeedMs() * getMaxSpeedMs()/(getSonarZone() - getMinSonarZone());
 		if(currentAngle>getSonarZone()) currentAngle = getSonarZone();
@@ -44,6 +48,8 @@ public class Destroyer extends Unit {
 					checkPosition(p, r);
 				}
 			}
+			Report vr = new Report();
+			checkVisualPosition(p, vr);
 		}
 		if(getReports().size()==0) getReports().add(new Report());
 	}

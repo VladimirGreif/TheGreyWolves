@@ -16,9 +16,7 @@ public class Submarine extends Unit {
 	
 	private double conversionFromKnotsToMs = 0.514444;
 	private int numOfTubes = 6;
-	private int visualRange = 5000;
 	private int periscopeDepth = 16;
-	private ArrayList<Unit> visibleTargets = new ArrayList<Unit>();
 	private Unit underAttack;
 	
 	private Torpedo torpedo;
@@ -30,10 +28,12 @@ public class Submarine extends Unit {
 		setCordinateH(16);
 		setSonarZone(180);
 		setMinSonarZone(135);
-		setMaxSpeedMs(17 * conversionFromKnotsToMs);
+		setMaxSpeedMs(7.5 * conversionFromKnotsToMs);
 		setMaxSonarRange(20000);
 		torpedo = new Torpedo(this);
 		setActiveWeapon(torpedo);
+		setVisibleRange(1000);
+		setVisualRange(5000);
 	}
 	
 	public void createReports(){
@@ -44,7 +44,7 @@ public class Submarine extends Unit {
 		getVisibleTargets().clear();
 		
 		for(Position p:getPositionList()){
-			if(getCordinateH()>=periscopeDepth){
+//			if(getCordinateH()>=periscopeDepth){
 				double currentAngle = getSonarZone() -  getSpeedMs() * getMaxSpeedMs()/(getSonarZone() - getMinSonarZone());
 				if(currentAngle>getSonarZone()) currentAngle = getSonarZone();
 				
@@ -59,23 +59,15 @@ public class Submarine extends Unit {
 						checkPosition(p, r);
 					}
 				}
-				if(getCordinateH()<=periscopeDepth){
-					Report vr = new Report();
-					checkVisualPosition(p, vr);
-				}
+//			}
+			if(getCordinateH()<=periscopeDepth){
+				Report vr = new Report();
+				checkVisualPosition(p, vr);
 			}
+			
 		}
-		System.out.println(getVisibleTargets().size());
 		if(getReports().size()==0) getReports().add(new Report());
 	};
-	
-	public ArrayList<Unit> getVisibleTargets() {
-		return visibleTargets;
-	}
-
-	public void setVisibleTargets(ArrayList<Unit> visibleTargets) {
-		this.visibleTargets = visibleTargets;
-	}
 
 	public void checkPosition(Position p, Report r){
 
@@ -90,17 +82,7 @@ public class Submarine extends Unit {
 		
 	}
 	
-	public void checkVisualPosition(Position p, Report r){
-		
-		if(p.getDistance()<=visualRange){
-			r.setSonarContact(true);
-			r.setRangeReport("Visual Contact : " + " distance is about " + ((int)p.getDistance()) + " meters");
-			r.setDirectionReport((int)p.getAnglePosition());
-			getReports().add(r);
-			getVisibleTargets().add(Game.getInstance().getUnitByID(p.getTargetID()));
-		}
-		
-	}
+
 
 	public Unit getUnderAttack() {
 		return underAttack;
@@ -110,5 +92,5 @@ public class Submarine extends Unit {
 		this.underAttack = underAttack;
 		torpedo.setAttackedUnit(underAttack);
 	}
-	
+
 }

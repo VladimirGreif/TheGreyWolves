@@ -2,6 +2,7 @@ package com.jsoft.game.thegreywolves.general;
 
 import java.util.ArrayList;
 
+import com.jsoft.game.thegreywolves.game.Game;
 import com.jsoft.game.thegreywolves.movement.Position;
 
 public abstract class Unit {
@@ -39,8 +40,29 @@ public abstract class Unit {
 	private ArrayList<Unit> victimList = new ArrayList<Unit>();
 	private double maxSonarRange = 100;
 	private Weapons activeWeapon;
+	private int visibleRange = 5000;
+	private int visualRange = 5000;
+	
+	public int getVisualRange() {
+		return visualRange;
+	}
+
+	public void setVisualRange(int visualRange) {
+		this.visualRange = visualRange;
+	}
+	private ArrayList<Unit> visibleTargets = new ArrayList<Unit>();
 	
 	
+	
+	
+	public ArrayList<Unit> getVisibleTargets() {
+		return visibleTargets;
+	}
+
+	public void setVisibleTargets(ArrayList<Unit> visibleTargets) {
+		this.visibleTargets = visibleTargets;
+	}
+
 	public Position getPositionByTargetID(long id){
 		
 		for(Position p:positionList){
@@ -56,6 +78,14 @@ public abstract class Unit {
 		return activeWeapon;
 	}
 
+	public int getVisibleRange() {
+		return visibleRange;
+	}
+
+	public void setVisibleRange(int visibleRange) {
+		this.visibleRange = visibleRange;
+	}
+
 	public void setActiveWeapon(Weapons activeWeapon) {
 		this.activeWeapon = activeWeapon;
 	}
@@ -69,6 +99,18 @@ public abstract class Unit {
 	}
 
 	public abstract void createReports();
+	
+	
+	public void checkVisualPosition(Position p, Report r) {
+		// TODO Auto-generated method stub
+		if(p.getDistance()<=getVisualRange() && Game.getInstance().getUnitByID(p.getTargetID()).getVisibleRange()>=p.getDistance()){
+			r.setSonarContact(true);
+			r.setRangeReport("Visual Contact : " + " distance is about " + ((int)p.getDistance()) + " meters");
+			r.setDirectionReport((int)p.getAnglePosition());
+			getReports().add(r);
+			getVisibleTargets().add(Game.getInstance().getUnitByID(p.getTargetID()));
+		}
+	}
 	
 
 	public ArrayList<Report> getReports() {
