@@ -26,10 +26,12 @@ public class Bomb extends Weapons{
 	public long fire() {
 		// TODO Auto-generated method stub
 		for(Position p:unit.getPositionList()){
-			if(p.getDistance()<= getFirePower() && Math.abs(getActiveDepth()-p.getDepthTargetPosition())<=getFirePower()){
-				Game.getInstance().getUnitByID(p.getTargetID()).setDestroyed(true);
-				unit.getVictimList().add(Game.getInstance().getUnitByID(p.getTargetID()));
-				return p.getTargetID();
+			if(!Game.getInstance().getUnitByID(p.getTargetID()).isDestroyed()){
+				if(p.getDistance()<= getFirePower() && Math.abs(getActiveDepth()-p.getDepthTargetPosition())<=getFirePower()){
+					Game.getInstance().getUnitByID(p.getTargetID()).setDestroyed(true);
+					unit.getVictimList().add(Game.getInstance().getUnitByID(p.getTargetID()));
+					return p.getTargetID();
+				}
 			}
 		}
 		return -1;

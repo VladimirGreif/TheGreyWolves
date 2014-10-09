@@ -29,12 +29,14 @@ public class Torpedo extends Weapons{
 		
 		
 		for(Position p:unit.getPositionList()){
-			if(p.getTargetID()==attackedUnit.getUnitId() &&   p.getDistance()<= getFirePower()){
-//				if(p.getDistance()<500){
-					Game.getInstance().getUnitByID(p.getTargetID()).setDestroyed(true);
-					unit.getVictimList().add(Game.getInstance().getUnitByID(p.getTargetID()));
-					return p.getTargetID();
-//				}
+			if(!Game.getInstance().getUnitByID(p.getTargetID()).isDestroyed()){
+				if(p.getTargetID()==attackedUnit.getUnitId() &&   p.getDistance()<= getFirePower()){
+	//				if(p.getDistance()<500){
+						Game.getInstance().getUnitByID(p.getTargetID()).setDestroyed(true);
+						unit.getVictimList().add(Game.getInstance().getUnitByID(p.getTargetID()));
+						return p.getTargetID();
+	//				}
+				}
 			}
 		}
 		return -1;
