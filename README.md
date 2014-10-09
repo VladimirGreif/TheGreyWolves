@@ -19,3 +19,6 @@ Mission task.
 And many other.
 
 Would like to add 3D to the game.
+
+Arcade mode should have 3D univerce and controls on the bottom of the screen.
+
