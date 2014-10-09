@@ -200,7 +200,7 @@ public class WorkPanelDemo1 extends JPanel implements ChangeListener, ActionList
 			
 			for(Unit u:((Submarine)player).getVisibleTargets()){
 				if(!u.isDestroyed()){
-					final JRadioButton button = new JRadioButton( u.getType().getDescription());
+					final JRadioButton button = new JRadioButton( u.getType().getDescription() + " : Position on " + (int)player.getPositionByTargetID(u.getUnitId()).getAnglePosition() + " : Distance : " + (int)player.getPositionByTargetID(u.getUnitId()).getDistance() + " meters");
 					button.setToolTipText(Long.toString(u.getUnitId()));
 					add(button);
 					targetGroup.add(button);
@@ -210,7 +210,7 @@ public class WorkPanelDemo1 extends JPanel implements ChangeListener, ActionList
 						button.setSelected(true);
 						((Submarine)player).setUnderAttack(Game.getInstance().getUnitByID(u.getUnitId()));
 					}
-					button.setBounds(400, 100+num * 50,
+					button.setBounds(350, 100+num * 50,
 							sizeButton.width, sizeButton.height);
 					button.addActionListener(new ActionListener() {
 		                @Override

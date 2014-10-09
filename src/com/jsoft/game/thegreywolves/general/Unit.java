@@ -40,6 +40,18 @@ public abstract class Unit {
 	private double maxSonarRange = 100;
 	private Weapons activeWeapon;
 	
+	
+	public Position getPositionByTargetID(long id){
+		
+		for(Position p:positionList){
+			if(p.getTargetID()==id){
+				return p;
+			}
+		}
+		
+		return null;
+	}
+	
 	public Weapons getActiveWeapon() {
 		return activeWeapon;
 	}
