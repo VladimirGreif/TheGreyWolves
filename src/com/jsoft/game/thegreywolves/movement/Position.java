@@ -6,14 +6,7 @@ public class Position {
 	private double anglePosition = 0;
 	private double depthTargetPosition = 0;
 	private long targetID = 0;
-	private double targetMaxRange = 0;
 	
-	public double getTargetMaxRange() {
-		return targetMaxRange;
-	}
-	public void setTargetMaxRange(double targetMaxRange) {
-		this.targetMaxRange = targetMaxRange;
-	}
 	public long getTargetID() {
 		return targetID;
 	}

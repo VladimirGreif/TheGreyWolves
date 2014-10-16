@@ -12,6 +12,7 @@ import java.util.Enumeration;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,11 +22,12 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import com.jsoft.game.thegreywolves.game.Game;
+import com.jsoft.game.thegreywolves.general.AUnit;
 import com.jsoft.game.thegreywolves.general.Report;
-import com.jsoft.game.thegreywolves.general.Unit;
-import com.jsoft.game.thegreywolves.general.Unit.TYPE;
-import com.jsoft.game.thegreywolves.units.Destroyer;
-import com.jsoft.game.thegreywolves.units.Submarine;
+import com.jsoft.game.thegreywolves.general.UnitConfiguration.TYPE;
+import com.jsoft.game.thegreywolves.units.destroyer.Destroyer;
+import com.jsoft.game.thegreywolves.units.submarine.Submarine;
+import com.jsoft.game.thegreywolves.weapons.Weapon;
 
 public class WorkPanelDemo1 extends JPanel implements ChangeListener, ActionListener {
 	
@@ -36,13 +38,14 @@ public class WorkPanelDemo1 extends JPanel implements ChangeListener, ActionList
 	private MainFrame parentFrame;
 	private double conversionFromKnotsToMs = 0.514444;
 	
-	private Unit player;
+	private AUnit player;
 	private JButton fireButton = new JButton("!!!FIRE!!!");
 	private JButton endTurnButton = new JButton("End Turn");
 	private JSlider speedSlider = new JSlider(JSlider.VERTICAL,0, 35, 0);
 	private JSlider bombDepthSlider = new JSlider(JSlider.VERTICAL,0, 500, 0);
 	private JSlider depthSlider = new JSlider(JSlider.VERTICAL,0, 400, 0);
 	private JSlider directionSlider = new JSlider(JSlider.HORIZONTAL,0, 360, 0);
+	private JComboBox weapons = new JComboBox();
 	private JLabel reportLabel = new JLabel("!!! Contact !!!");
 	private JLabel bombDepthLabel = new JLabel("BombDepth");
 	private JLabel depthLabel = new JLabel("Depth");
@@ -132,8 +135,6 @@ public class WorkPanelDemo1 extends JPanel implements ChangeListener, ActionList
 		depthSlider.setValue(0);
 		depthSlider.setVisible(false);
 
-
-		
 		
 		Insets insets = getInsets();
 		Dimension size = speedSlider.getPreferredSize();
@@ -199,8 +200,8 @@ public class WorkPanelDemo1 extends JPanel implements ChangeListener, ActionList
 		world.setUnit(player);
 		String report = "";
 		String victims = "";
-		for(Unit u:player.getVictimList()){
-			victims = victims + " <br> " + u.getName() + " was sunk !!! by " + player.getName();
+		for(AUnit u:player.getVictimList()){
+			victims = victims + " <br> " + u.getUnitName() + " was sunk !!! by " + player.getUnitName();
 		}
 //		victims = "<html>" + victims +"</html>";
 		for(Report r:player.getReports()){
@@ -213,7 +214,7 @@ public class WorkPanelDemo1 extends JPanel implements ChangeListener, ActionList
 		reportLabel.setBounds(10, 350,
 	             size.width, size.height);
 		
-		speedSlider.setMaximum((int)(player.getMaxSpeedMs()/conversionFromKnotsToMs));
+		speedSlider.setMaximum((int)(player.getConfiguration().getMaxSpeedMs()/conversionFromKnotsToMs));
 		
 		if(player.getType()==TYPE.DESTROER){
 
@@ -224,10 +225,11 @@ public class WorkPanelDemo1 extends JPanel implements ChangeListener, ActionList
 			
 			depthLabel.setVisible(true);
 			depthSlider.setVisible(true);
+			depthSlider.setValue(player.getCoordinates().getCoordinateH());
 			
 		}
 		
-		if(player.getType()==TYPE.SUBMARINE){
+		{
 			int num = 0;
 			
 			
@@ -237,7 +239,7 @@ public class WorkPanelDemo1 extends JPanel implements ChangeListener, ActionList
 				remove(jREnum.nextElement());
 			}			
 			
-			for(Unit u:((Submarine)player).getVisibleTargets()){
+			for(AUnit u:player.getVisibleTargets()){
 				if(!u.isDestroyed()){
 					final JRadioButton button = new JRadioButton( u.getType().getDescription() + " : Position on " + (int)player.getPositionByTargetID(u.getUnitId()).getAnglePosition() + " : Distance : " + (int)player.getPositionByTargetID(u.getUnitId()).getDistance() + " meters");
 					button.setToolTipText(Long.toString(u.getUnitId()));
@@ -247,7 +249,7 @@ public class WorkPanelDemo1 extends JPanel implements ChangeListener, ActionList
 					Dimension sizeButton = button.getPreferredSize();
 					if(num==0){
 						button.setSelected(true);
-						((Submarine)player).setUnderAttack(Game.getInstance().getUnitByID(u.getUnitId()));
+						player.setUnderAttack(Game.getInstance().getUnitByID(u.getUnitId()));
 					}
 					button.setBounds(380, 100+num * 50,
 							sizeButton.width, sizeButton.height);
@@ -255,7 +257,7 @@ public class WorkPanelDemo1 extends JPanel implements ChangeListener, ActionList
 		                @Override
 		                public void actionPerformed(ActionEvent e) {
 		                	System.out.println(((JRadioButton)e.getSource()).getToolTipText());
-		                	((Submarine)player).setUnderAttack(Game.getInstance().getUnitByID(Long.valueOf(((JRadioButton)e.getSource()).getToolTipText())));
+		                	player.setUnderAttack(Game.getInstance().getUnitByID(Long.valueOf(((JRadioButton)e.getSource()).getToolTipText())));
 		                }
 		            });
 				num++;
@@ -264,7 +266,7 @@ public class WorkPanelDemo1 extends JPanel implements ChangeListener, ActionList
 			
 
 		}
-		
+
 	}
 
 	@Override
@@ -285,7 +287,7 @@ public class WorkPanelDemo1 extends JPanel implements ChangeListener, ActionList
 			repaint();
 		}else if(e.getSource()==fireButton){
 			System.out.println("FIRE");
-			long rezult = player.getActiveWeapon().fire();
+			player.fire();
 			repaint();
 		}
 	}
@@ -295,23 +297,35 @@ public class WorkPanelDemo1 extends JPanel implements ChangeListener, ActionList
 		// TODO Auto-generated method stub
 		JSlider sl = (JSlider) e.getSource();
 		if(sl == speedSlider){
-			player.setSpeedMs(conversionFromKnotsToMs * sl.getValue());
+			player.setSpeedMs((int)(conversionFromKnotsToMs * sl.getValue()));
 		}else if(sl == directionSlider){
-			player.setKurs(sl.getValue());
+			player.setDirection(sl.getValue());
 		}else if(sl == bombDepthSlider){
 			((Destroyer)player).getBomb().setActiveDepth(bombDepthSlider.getValue());
 		}else if(sl == depthSlider){
-			player.setCordinateH(sl.getValue());
+			player.getCoordinates().setCoordinateH(sl.getValue());
 		}
 //		System.out.println("Changed " + sl.getToolTipText());
 	}
 
-	public Unit getPlayer() {
+	public AUnit getPlayer() {
 		return player;
 	}
 
-	public void setPlayer(Unit player) {
+	public void setPlayer(AUnit player) {
 		this.player = player;
+		
+		weapons.removeAllItems();
+		for(Weapon w:player.getWeapons().getWeaponList()){
+			System.out.println(w.getName());
+			weapons.addItem(w.getName());
+		}
+		Dimension sizeWeapons = weapons.getPreferredSize();
+		weapons.setBounds(300, 350,
+				sizeWeapons.width, sizeWeapons.height);
+		weapons.setVisible(true);
+		this.add(weapons);
+		
 	}
 
 	public Panel3D getWorld() {

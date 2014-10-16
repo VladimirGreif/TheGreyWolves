@@ -2,7 +2,7 @@ package com.jsoft.game.thegreywolves.ui;
 
 import javax.swing.JFrame;
 
-import com.jsoft.game.thegreywolves.general.Unit;
+import com.jsoft.game.thegreywolves.general.AUnit;
 
 public class MainFrame extends JFrame{
 	
@@ -18,6 +18,7 @@ public class MainFrame extends JFrame{
 
 	public MainFrame(){
 		super();
+		setTitle(TITLE);
 		goToSelectionPanel();
 	}
 	
@@ -43,7 +44,7 @@ public class MainFrame extends JFrame{
 		return CANVAS_HEIGHT;
 	}
 	
-	public void setPlayerUnit(Unit unit){
+	public void setPlayerUnit(AUnit unit){
 		wp.setPlayer(unit);
 	}
 }

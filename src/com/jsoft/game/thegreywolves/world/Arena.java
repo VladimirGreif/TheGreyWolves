@@ -3,11 +3,11 @@ package com.jsoft.game.thegreywolves.world;
 import java.awt.Dimension;
 import java.util.ArrayList;
 
-import com.jsoft.game.thegreywolves.general.Unit;
+import com.jsoft.game.thegreywolves.general.AUnit;
 
 public class Arena {
-	
-	private ArrayList<Unit> listOfPlayers = new ArrayList<Unit>();
+
+	private ArrayList<AUnit> listOfPlayers = new ArrayList<AUnit>();
 	private Dimension size = new Dimension();
 	private final int maxX = 50000;
 	private final int maxY = 50000;
@@ -16,11 +16,11 @@ public class Arena {
 		size.setSize(maxX, maxY);
 	}
 
-	public ArrayList<Unit> getListOfPlayers() {
+	public ArrayList<AUnit> getListOfPlayers() {
 		return listOfPlayers;
 	}
 
-	public void setListOfPlayers(ArrayList<Unit> listOfPlayers) {
+	public void setListOfPlayers(ArrayList<AUnit> listOfPlayers) {
 		this.listOfPlayers = listOfPlayers;
 	}
 

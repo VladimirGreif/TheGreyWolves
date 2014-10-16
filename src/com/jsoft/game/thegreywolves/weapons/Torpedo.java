@@ -1,25 +1,29 @@
 package com.jsoft.game.thegreywolves.weapons;
 
 import com.jsoft.game.thegreywolves.game.Game;
-import com.jsoft.game.thegreywolves.general.Unit;
-import com.jsoft.game.thegreywolves.general.Weapons;
+import com.jsoft.game.thegreywolves.general.AUnit;
 import com.jsoft.game.thegreywolves.movement.Position;
 
-public class Torpedo extends Weapons{
+public class Torpedo extends Weapon{
 
-	private Unit unit;
-	private Unit attackedUnit;
+	private AUnit attackedUnit;
+	private String name = "Torpedo";
 	
-	public Torpedo(Unit u){
-		unit = u;
-		setFirePower(5000);
+	public Torpedo(AUnit u) {
+		super(u);
+		// TODO Auto-generated constructor stub
+		setName(name);
 	}
-	
-	public Unit getAttackedUnit() {
+
+	public String getName() {
+		return name;
+	}
+
+	public AUnit getAttackedUnit() {
 		return attackedUnit;
 	}
 
-	public void setAttackedUnit(Unit attackedUnit) {
+	public void setAttackedUnit(AUnit attackedUnit) {
 		this.attackedUnit = attackedUnit;
 	}
 
@@ -28,12 +32,13 @@ public class Torpedo extends Weapons{
 		// TODO Auto-generated method stub
 		
 		
-		for(Position p:unit.getPositionList()){
+		for(Position p:getBoard().getPositionList()){
 			if(!Game.getInstance().getUnitByID(p.getTargetID()).isDestroyed()){
-				if(p.getTargetID()==attackedUnit.getUnitId() &&   p.getDistance()<= getFirePower()){
+				if(p.getTargetID()==getUnitUnderUtack().getUnitId() &&   p.getDistance()<= getMaxFireRange()){
 	//				if(p.getDistance()<500){
 						Game.getInstance().getUnitByID(p.getTargetID()).setDestroyed(true);
-						unit.getVictimList().add(Game.getInstance().getUnitByID(p.getTargetID()));
+						getBoard().getVictimList().add(Game.getInstance().getUnitByID(p.getTargetID()));
+						System.out.println(getBoard().getVictimList().size());
 						return p.getTargetID();
 	//				}
 				}

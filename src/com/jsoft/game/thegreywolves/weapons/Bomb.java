@@ -1,20 +1,24 @@
 package com.jsoft.game.thegreywolves.weapons;
 
 import com.jsoft.game.thegreywolves.game.Game;
-import com.jsoft.game.thegreywolves.general.Unit;
-import com.jsoft.game.thegreywolves.general.Weapons;
+import com.jsoft.game.thegreywolves.general.AUnit;
 import com.jsoft.game.thegreywolves.movement.Position;
 
-public class Bomb extends Weapons{
+public class Bomb extends Weapon{
 	
 	private int activeDepth = 0;
-	private Unit unit;
-	
-	public Bomb(Unit u){
-		unit = u;
-		setFirePower(100);
+	private String name = "Bombs";
+
+	public Bomb(AUnit u) {
+		super(u);
+		// TODO Auto-generated constructor stub
+		setName(name);
 	}
-	
+
+	public String getName() {
+		return name;
+	}
+
 	public int getActiveDepth() {
 		return activeDepth;
 	}
@@ -25,11 +29,12 @@ public class Bomb extends Weapons{
 	@Override
 	public long fire() {
 		// TODO Auto-generated method stub
-		for(Position p:unit.getPositionList()){
-			if(!Game.getInstance().getUnitByID(p.getTargetID()).isDestroyed()){
+		for(Position p:getBoard().getPositionList()){
+			AUnit t = Game.getInstance().getUnitByID(p.getTargetID());
+			if(!t.isDestroyed()){
 				if(p.getDistance()<= getFirePower() && Math.abs(getActiveDepth()-p.getDepthTargetPosition())<=getFirePower()){
-					Game.getInstance().getUnitByID(p.getTargetID()).setDestroyed(true);
-					unit.getVictimList().add(Game.getInstance().getUnitByID(p.getTargetID()));
+					t.setDestroyed(true);
+					getBoard().getVictimList().add(t);
 					return p.getTargetID();
 				}
 			}

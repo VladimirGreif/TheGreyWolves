@@ -1,52 +1,55 @@
 package com.jsoft.game.thegreywolves.general;
 
+import java.util.ArrayList;
+
+import com.jsoft.game.thegreywolves.weapons.Weapon;
+
 public abstract class Weapons {
-	private double minFireRange = 0;
-	private double maxFireRange = 0;
-	private double accuracy = 0;
-	private double firePower = 0;
-	private int numOfShell = 100;
 	
-	public abstract long fire();
-
-	public double getMinFireRange() {
-		return minFireRange;
-	}
-
-	public void setMinFireRange(double minFireRange) {
-		this.minFireRange = minFireRange;
-	}
-
-	public double getMaxFireRange() {
-		return maxFireRange;
-	}
-
-	public void setMaxFireRange(double maxFireRange) {
-		this.maxFireRange = maxFireRange;
-	}
-
-	public double getAccuracy() {
-		return accuracy;
-	}
-
-	public void setAccuracy(double accuracy) {
-		this.accuracy = accuracy;
-	}
-
-	public double getFirePower() {
-		return firePower;
-	}
-
-	public void setFirePower(double firePower) {
-		this.firePower = firePower;
-	}
-
-	public int getNumOfShell() {
-		return numOfShell;
-	}
-
-	public void setNumOfShell(int numOfShell) {
-		this.numOfShell = numOfShell;
+	private Weapon weapon;
+	private AUnit board;
+	private AUnit unitUnderAtack;
+	private ArrayList<Weapon> weaponList = new ArrayList<Weapon>();
+	
+	public Weapons(AUnit u){
+		board = u;
 	}
 	
+
+	public ArrayList<Weapon> getWeaponList() {
+		return weaponList;
+	}
+
+
+	public void setWeaponList(ArrayList<Weapon> weaponList) {
+		this.weaponList = weaponList;
+	}
+
+
+	public Weapon getActiveWeapon() {
+		return weapon;
+	}
+
+	public void setActiveWeapon(Weapon weapon) {
+		this.weapon = weapon;
+	}
+
+	public AUnit getBoard() {
+		return board;
+	}
+
+	public void setBoard(AUnit board) {
+		this.board = board;
+	}
+
+	public AUnit getUnitUnderAtack() {
+		return unitUnderAtack;
+	}
+
+	public void setUnitUnderAtack(AUnit unitUnderAtack) {
+		this.unitUnderAtack = unitUnderAtack;
+		getActiveWeapon().setUnitUnderUtack(unitUnderAtack);
+	}
+	
+
 }

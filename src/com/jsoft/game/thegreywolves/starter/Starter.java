@@ -11,7 +11,6 @@ public class Starter {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				MainFrame frame = new MainFrame();
-				frame.setTitle(frame.TITLE);
 				frame.setDefaultCloseOperation(MainFrame.EXIT_ON_CLOSE);
 				frame.pack();
 				frame.setLocationRelativeTo(null);

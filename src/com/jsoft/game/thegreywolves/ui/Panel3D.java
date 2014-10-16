@@ -26,8 +26,8 @@ import javax.vecmath.Color3f;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3f;
 
-import com.jsoft.game.thegreywolves.general.Unit;
-import com.jsoft.game.thegreywolves.general.Unit.TYPE;
+import com.jsoft.game.thegreywolves.general.AUnit;
+import com.jsoft.game.thegreywolves.general.UnitConfiguration.TYPE;
 import com.sun.j3d.loaders.IncorrectFormatException;
 import com.sun.j3d.loaders.ParsingErrorException;
 import com.sun.j3d.loaders.Scene;
@@ -45,7 +45,11 @@ public class Panel3D extends JPanel{
 	private SimpleUniverse univ = null;
     private BranchGroup scene = null;
     private BranchGroup objRoot = null;
-    private Unit unit;
+    private AUnit unit;
+    private Scene cargo; 
+    private Scene destroyer;
+    private Scene submarine;
+    private Scene temp;
 
 	public Panel3D(){
 		super();
@@ -54,7 +58,7 @@ public class Panel3D extends JPanel{
     	// Create Canvas3D and SimpleUniverse; add canvas to drawing panel
     	Canvas3D c = createUniverse();
     	add(c, java.awt.BorderLayout.CENTER);
-
+    	loadObjects();
     	// Create the content branch and add it to the universe
     	scene = createSceneGraph();
     	univ.addBranchGraph(scene);
@@ -71,6 +75,41 @@ public class Panel3D extends JPanel{
     	scene = createSceneGraph();
     	univ.addBranchGraph(scene);
 	}
+	
+	private void loadObjects(){
+		FileReader reader = null;
+		try{
+
+			String path = "D:\\SpringProjects\\TheGreyWolves\\FishingBoat\\msmunchen.obj";
+			if(unit!= null){
+				if(unit.getType()==TYPE.DESTROER){
+					path = "D:\\SpringProjects\\TheGreyWolves\\WICK40\\Wick40.obj";
+					
+				}else if(unit.getType()==TYPE.SUBMARINE){
+					path = "D:\\SpringProjects\\TheGreyWolves\\U48\\U48.obj";
+				}
+			}
+			
+			
+			File file = new File(path);
+			reader = new FileReader(file);
+		   	ObjectFile f = new ObjectFile ();
+			f.setFlags (ObjectFile.RESIZE | ObjectFile.TRIANGULATE | ObjectFile.STRIPIFY);
+			temp = f.load (reader);
+			reader.close();
+		}catch(Exception e){
+			System.out.println("Something is not working");
+			e.printStackTrace();
+		}finally{
+			if(reader!=null)
+				try {
+					reader.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+	}
 
     public BranchGroup createSceneGraph() {
 	// Create the root of the branch graph
@@ -85,40 +124,8 @@ public class Panel3D extends JPanel{
 	objTrans.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 
 	objRoot.addChild(objTrans);
-
-	// Create a simple Shape3D node; add it to the scene graph.
-	FileReader reader = null;
-	try{
-
-		String path = "D:\\SpringProjects\\TheGreyWolves\\FishingBoat\\msmunchen.obj";
-		if(unit!= null){
-			if(unit.getType()==TYPE.DESTROER){
-				path = "D:\\SpringProjects\\TheGreyWolves\\Patrol\\PBoat.obj";
-			}else if(unit.getType()==TYPE.SUBMARINE){
-				path = "D:\\SpringProjects\\TheGreyWolves\\U48\\U48.obj";
-			}
-		}
-		
-		
-		File file = new File(path);
-		reader = new FileReader(file);
-	   	ObjectFile f = new ObjectFile ();
-		f.setFlags (ObjectFile.RESIZE | ObjectFile.TRIANGULATE | ObjectFile.STRIPIFY);
-		Scene s = f.load (reader);
-		objTrans.addChild(s.getSceneGroup ());
-		reader.close();
-	}catch(Exception e){
-		System.out.println("Something is not working");
-		e.printStackTrace();
-	}finally{
-		if(reader!=null)
-			try {
-				reader.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	}
+	loadObjects();
+	objTrans.addChild(temp.getSceneGroup ());
 	
 //	objTrans.addChild(new ColorCube(0.4));
 	// Create a red light that shines for 1000m from the origin
@@ -200,11 +207,11 @@ public class Panel3D extends JPanel{
 	return c;
     }
 
-	public Unit getUnit() {
+	public AUnit getUnit() {
 		return unit;
 	}
 
-	public void setUnit(Unit unit) {
+	public void setUnit(AUnit unit) {
 		this.unit = unit;
 	}
 
